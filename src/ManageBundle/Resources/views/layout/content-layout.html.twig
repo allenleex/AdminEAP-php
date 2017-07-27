@@ -1,0 +1,20 @@
+<section class="content-header">
+    <h1>
+        {% block page_title %}{{ title }}{% endblock %}
+    </h1>
+    {% block breadcrumb %}
+        {% include 'ManageBundle:Breadcrumb:breadcrumb.html.twig'  %}
+    {% endblock %}
+</section>
+
+<!-- Main content -->
+<section class="content">
+{% block content %}{% endblock %}
+</section>
+{% block javascripts %}
+<script>
+var listurl = "{{ bundle }}/{{ controller }}/list";
+var editurl = "{{ bundle }}/{{ controller }}/edit";
+var delurl = "{{ bundle }}/{{ controller }}/delete";
+</script>
+{% endblock %}

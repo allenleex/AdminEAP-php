@@ -1,0 +1,22 @@
+{% extends 'AvanzuAdminThemeBundle:layout:base-layout.html.twig' %}
+{% block title %}{{ product }}{% endblock %}
+{% block javascripts_head %}
+{{ parent() }}
+<script type="text/javascript">
+$('button[data-btn-type]').off().on('click',function() {
+	var action = $(this).attr('data-btn-type');
+	var rowId=userTable.getSelectedRowId();
+	switch (action) {
+    	case 'add':
+        	alert('add');
+    		break;
+	}
+});
+</script>
+{% endblock javascripts_head %}
+{% block page_title %}{% endblock %}
+{% block page_subtitle %}{% endblock %}
+{% block avanzu_admin_footer %}{% endblock %}
+{% block page_content %}
+
+{% endblock %}

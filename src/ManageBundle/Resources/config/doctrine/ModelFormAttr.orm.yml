@@ -1,0 +1,176 @@
+ManageBundle\Entity\ModelFormAttr:
+    type: entity
+    table: model_form_attr
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 表单字段名称
+        type:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        label:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 表单字段label
+        attr:
+            type: string
+            nullable: false
+            length: 200
+            options:
+                fixed: false
+                comment: 表单字段属性
+        choices:
+            type: string
+            nullable: false
+            length: 200
+            options:
+                fixed: false
+                comment: 下拉框参数
+        required:
+            type: boolean
+            nullable: false
+            options:
+                comment: 0否，1是
+        entitypath:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: entity路径
+        property:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: entity关联字段名
+        queryBuilder:
+            type: string
+            nullable: false
+            length: 200
+            options:
+                fixed: false
+                comment: 查询规则
+            column: query_builder
+        modelFormId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 关联表单ID
+            column: model_form_id
+        validateRule:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 验证规则
+            column: validate_rule
+        errorInfo:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 出错提示
+            column: error_info
+        autoType:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: '自动完成方式function比函数,field字段,string字符串'
+            column: auto_type
+        value:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 默认值
+        isonly:
+            type: boolean
+            nullable: false
+            options:
+                comment: 是否唯一，0否，1是
+        bundle:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 所属Bundle
+        dealhtml:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: HTML处理
+        dealhtmltags:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: HTML处理项
+        checked:
+            type: boolean
+            nullable: false
+            options:
+                comment: 是否审核
+        attributes:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+        issystem:
+            type: boolean
+            nullable: false
+        identifier:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 唯一标识
+        createTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: create_time
+        updateTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: update_time
+        isDelete:
+            type: boolean
+            nullable: false
+            column: is_delete
+    lifecycleCallbacks: {  }

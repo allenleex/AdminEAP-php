@@ -1,0 +1,73 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    acl:
+        connection: manage
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        our_db_provider:
+            entity:
+                class: CoreBundle:Users
+                #property: username_email
+                # if you're using multiple entity managers
+                # manager_name: customer
+        api_key_user_provider:
+            id: CoreBundle\Security\Provider\ApiKeyProvider
+        userProvider:
+            id: CoreBundle\Security\Provider\UserProvider
+    encoders:
+        CoreBundle\Security\User\Users:
+            id: security.encoder
+        CoreBundle\Entity\Users:
+            id: security.encoder
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        pass_area:
+            pattern:  (login|register|captcha|geetest)$
+            security: false
+#        main:
+#            pattern: ^/api
+#            stateless: true
+##            host: ^admin\.example\.com$
+##            wsse:      { lifetime: 30 }
+#            simple_preauth:
+#                authenticator: CoreBundle\Security\ApiKeyAuthenticator
+#            provider: api_key_user_provider
+#            # activate different ways to authenticate
+#
+#            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+#            #http_basic: ~
+#
+#            # https://symfony.com/doc/current/security/form_login_setup.html
+#            #form_login: ~
+        manage_area:
+            pattern: ^/manage
+            context: 'context_key'
+            user_checker: core.user_checker
+            provider: our_db_provider
+            simple_form:                
+                authenticator: core.simpleauthenticator
+                username_parameter: username
+                password_parameter: password
+                csrf_parameter: csrf_token
+                csrf_token_id: newprotoken
+                csrf_token_generator: security.csrf.token_manager
+                check_path:    manage_check
+                login_path:    manage_login
+                default_target_path: manage_main
+                success_handler: manage.authentication_handler
+                failure_handler: core.authentication_handler
+            logout:
+                path:   manage_logout
+                target: /
+                invalidate_session: false
+                delete_cookies:
+                    a: { path: null, domain: null }
+                    b: { path: null, domain: null }
+    access_control:
+        - { path: ^/api, roles: ROLE_API }

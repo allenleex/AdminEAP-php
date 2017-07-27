@@ -1,0 +1,32 @@
+services:
+    avanzu_admin_theme.exception_controller:
+        class: 'Avanzu\AdminThemeBundle\Controller\ExceptionController'
+        arguments: ['@twig', '%kernel.debug%']
+    avanzu_admin_theme.widget_extension.class:
+        class: 'Avanzu\AdminThemeBundle\Twig\WidgetExtension'
+        tags: ['twig.extension']
+    avanzu_admin_theme.theme_manager:
+        class: 'Avanzu\AdminThemeBundle\Theme\ThemeManager'
+        arguments: ['@service_container', '']
+    avanzu_admin_theme.setup_theme_listener:
+        class: 'ManageBundle\EventListener\SetupThemeListener'
+        arguments: ['@avanzu_admin_theme.theme_manager', '', '']
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.controller', method: 'onKernelController' }
+    avanzu_admin_theme.context_listener:
+        class: 'Avanzu\AdminThemeBundle\EventListener\ContextListener'
+        arguments: ['@service_container']
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', method: 'onRequest' }
+    avanzu_admin_theme.navbar_task_listener:
+        class: 'Avanzu\AdminThemeBundle\EventListener\NavbarTaskListDemoListener'
+        tags:
+            - { name: 'kernel.event_listener', event: 'theme.tasks', method: 'onListTasks' }
+    avanzu_admin_theme.navbar_notify_listener:
+        class: 'Avanzu\AdminThemeBundle\EventListener\NavbarNotificationListDemoListener'
+        tags:
+            - { name: 'kernel.event_listener', event: 'theme.notifications', method: 'onListNotifications' }
+    avanzu_admin_theme.navbar_msg_listener:
+        class: 'Avanzu\AdminThemeBundle\EventListener\NavbarMessageListDemoListener'
+        tags:
+            - { name: 'kernel.event_listener', event: 'theme.messages', method: 'onListMessages' }

@@ -1,0 +1,8 @@
+avanzu_admin:
+    resource: "@AvanzuAdminThemeBundle/Resources/config/routes.yml"
+core:
+    resource: "@CoreBundle/Resources/config/routing.yml"
+    prefix:   /
+manage:
+    resource: "@ManageBundle/Resources/config/routing.yml"
+    prefix:   /manage

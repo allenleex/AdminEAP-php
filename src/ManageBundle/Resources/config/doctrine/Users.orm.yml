@@ -1,0 +1,113 @@
+ManageBundle\Entity\Users:
+    type: entity
+    table: users
+    uniqueConstraints:
+        UNIQ_3AF03EC5F85E0677:
+            columns:
+                - username
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        mid:
+            type: boolean
+            nullable: false
+        username:
+            type: string
+            nullable: false
+            length: 25
+            options:
+                fixed: false
+        password:
+            type: string
+            nullable: false
+            length: 64
+            options:
+                fixed: false
+        salt:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+        email:
+            type: string
+            nullable: false
+            length: 60
+            options:
+                fixed: false
+        tel:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        mobile:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        loginSalt:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+            column: login_salt
+        locale:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        loginip:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        logintime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+        token:
+            type: string
+            nullable: false
+            length: 30
+            options:
+                fixed: false
+        identifier:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        isActive:
+            type: boolean
+            nullable: false
+            column: is_active
+        createTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: create_time
+        updateTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: update_time
+        isDelete:
+            type: boolean
+            nullable: false
+            column: is_delete
+    lifecycleCallbacks: {  }

@@ -1,0 +1,115 @@
+id:
+    1:
+        type: 0
+        mode: 0
+        service: db.users
+        structure: false
+        identifier: 12a7e327ecfcc6e2b13c5227fe2bb6d2
+        attributeTable: 0
+    2:
+        type: 0
+        mode: 0
+        service: db.models
+        structure: false
+        identifier: ad116a632e2c5068281524c40a24bf47
+        attributeTable: 0
+    3:
+        type: 0
+        mode: 0
+        service: db.model_attribute
+        structure: false
+        identifier: a496b230026ec5087dff504c6279d249
+        attributeTable: 0
+    4:
+        type: 0
+        mode: 0
+        service: db.model_form
+        structure: false
+        identifier: b7ddb12768d0ea458b86956c0b8b005d
+        attributeTable: 0
+    5:
+        type: 0
+        mode: 0
+        service: db.model_form_attr
+        structure: false
+        identifier: 849b7ca84a9990cde42f3e34f9475c03
+        attributeTable: 0
+    6:
+        type: 0
+        mode: 0
+        service: db.menus
+        structure: false
+        identifier: 005269955d5fbcd2c39a2dbbd6c7f9fd
+        attributeTable: 0
+    7:
+        type: 0
+        mode: 0
+        service: db.clonebase
+        structure: false
+        identifier: a35febf598b4b0b7819c58192cbbda2f
+        attributeTable: 0
+name:
+    users:
+        type: 0
+        mode: 0
+        service: db.users
+        structure: false
+        identifier: 12a7e327ecfcc6e2b13c5227fe2bb6d2
+        attributeTable: 0
+    models:
+        type: 0
+        mode: 0
+        service: db.models
+        structure: false
+        identifier: ad116a632e2c5068281524c40a24bf47
+        attributeTable: 0
+    model_attribute:
+        type: 0
+        mode: 0
+        service: db.model_attribute
+        structure: false
+        identifier: a496b230026ec5087dff504c6279d249
+        attributeTable: 0
+    model_form:
+        type: 0
+        mode: 0
+        service: db.model_form
+        structure: false
+        identifier: b7ddb12768d0ea458b86956c0b8b005d
+        attributeTable: 0
+    model_form_attr:
+        type: 0
+        mode: 0
+        service: db.model_form_attr
+        structure: false
+        identifier: 849b7ca84a9990cde42f3e34f9475c03
+        attributeTable: 0
+    menus:
+        type: 0
+        mode: 0
+        service: db.menus
+        structure: false
+        identifier: 005269955d5fbcd2c39a2dbbd6c7f9fd
+        attributeTable: 0
+    clonebase:
+        type: 0
+        mode: 0
+        service: db.clonebase
+        structure: false
+        identifier: a35febf598b4b0b7819c58192cbbda2f
+        attributeTable: 0
+identifier:
+    12a7e327ecfcc6e2b13c5227fe2bb6d2:
+        id: 1
+    ad116a632e2c5068281524c40a24bf47:
+        id: 2
+    a496b230026ec5087dff504c6279d249:
+        id: 3
+    b7ddb12768d0ea458b86956c0b8b005d:
+        id: 4
+    849b7ca84a9990cde42f3e34f9475c03:
+        id: 5
+    005269955d5fbcd2c39a2dbbd6c7f9fd:
+        id: 6
+    a35febf598b4b0b7819c58192cbbda2f:
+        id: 7

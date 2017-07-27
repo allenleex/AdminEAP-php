@@ -1,0 +1,6 @@
+services:
+    manage_bundle.users_listener:
+        class: 'ManageBundle\EventListener\NavbarShowUserListener'
+        tags:
+            - { name: 'kernel.event_listener', event: 'theme.navbar_user', method: 'onShowUser' }
+            - { name: 'kernel.event_listener', event: 'theme.sidebar_user', method: 'onShowUser' }

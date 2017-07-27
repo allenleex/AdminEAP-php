@@ -1,0 +1,515 @@
+<?php
+/**
+* @copyright Copyright (c) 2008 – 2017 www.08cms.com
+* @author 08cms项目开发团队
+* @package 08cms
+* create date 2017年7月3日
+*/
+namespace ManageBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+/**
+ * @ORM\Table(name="cms_users")
+ * @ORM\Entity(repositoryClass="ManageBundle\Repository\UsersRepository")
+ */
+class Users implements UserInterface, \Serializable
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @ORM\Column(type="string", length=25, unique=true)
+     */
+    private $username;
+    
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+    
+    /**
+     * @ORM\Column(type="string", length=10, unique=true)
+     */
+    private $salt;
+    
+    /**
+     * @ORM\Column(type="string", length=60, unique=true)
+     */
+    private $email;
+    
+    /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $tel;
+    
+    /**
+     * @ORM\Column(name="login_salt",type="string", length=10, unique=true)
+     */
+    private $loginSalt;
+    
+    /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $locale;
+    
+    /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $loginip;
+    
+    /**
+     * @ORM\Column(type="integer", length=10, unique=true)
+     */
+    private $logintime;
+    
+    /**
+     * @ORM\Column(type="string", length=30, unique=true)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $identifier;
+    
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+    
+    /**
+     * @ORM\Column(name="create_time",type="integer", length=10, unique=true)
+     */
+    private $createTime;
+    
+    /**
+     * @ORM\Column(name="update_time",type="integer", length=10, unique=true)
+     */
+    private $updateTime;
+    
+    /**
+     * @ORM\Column(name="is_delete",type="boolean")
+     */
+    private $isDelete;
+
+    public function __construct()
+    {
+        $str = uniqid(mt_rand(),1);
+
+        $this->isActive = true;
+        $this->token = md5($str);
+        $this->locale = 'zh_CN';        
+        $this->createTime = time();
+        $this->updateTime = time();
+        $this->isDelete = false;
+        $this->loginip = $_SERVER['REMOTE_ADDR'];
+        $this->salt = substr(md5(uniqid(null, true)), 0, 5);
+        $this->loginSalt = substr(sha1(sha1($str)), 0, 10);
+        $this->identifier = substr(sha1(sha1($str)), 0, 10);
+        
+        
+    }
+    
+    public function getUsername()
+    {
+        return $this->username;
+    }
+    
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+    
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return Users
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    
+        return $this;
+    }
+    
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return Users
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Users
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Users
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    /**
+     * Set tel
+     *
+     * @param string $tel
+     *
+     * @return Users
+     */
+    public function setTel($tel)
+    {
+        $this->tel = $tel;
+    
+        return $this;
+    }
+    
+    /**
+     * Get tel
+     *
+     * @return string
+     */
+    public function getTel()
+    {
+        return $this->tel;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Users
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set loginSalt
+     *
+     * @param string $loginSalt
+     *
+     * @return Users
+     */
+    public function setLoginSalt($loginSalt)
+    {
+        $this->loginSalt = $loginSalt;
+
+        return $this;
+    }
+
+    /**
+     * Get loginSalt
+     *
+     * @return string
+     */
+    public function getLoginSalt()
+    {
+        return $this->loginSalt;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     *
+     * @return Users
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set loginip
+     *
+     * @param string $loginip
+     *
+     * @return Users
+     */
+    public function setLoginip($loginip)
+    {
+        $this->loginip = $loginip;
+
+        return $this;
+    }
+
+    /**
+     * Get loginip
+     *
+     * @return string
+     */
+    public function getLoginip()
+    {
+        return $this->loginip;
+    }
+
+    /**
+     * Set logintime
+     *
+     * @param integer $logintime
+     *
+     * @return Users
+     */
+    public function setLogintime($logintime)
+    {
+        $this->logintime = $logintime;
+
+        return $this;
+    }
+
+    /**
+     * Get logintime
+     *
+     * @return integer
+     */
+    public function getLogintime()
+    {
+        return $this->logintime;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return Users
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set identifier
+     *
+     * @param string $identifier
+     *
+     * @return Users
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * Get identifier
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Set createTime
+     *
+     * @param string $createTime
+     *
+     * @return Users
+     */
+    public function setCreateTime($createTime)
+    {
+        $this->createTime = $createTime;
+
+        return $this;
+    }
+
+    /**
+     * Get createTime
+     *
+     * @return string
+     */
+    public function getCreateTime()
+    {
+        return $this->createTime;
+    }
+
+    /**
+     * Set updateTime
+     *
+     * @param string $updateTime
+     *
+     * @return Users
+     */
+    public function setUpdateTime($updateTime)
+    {
+        $this->updateTime = $updateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get updateTime
+     *
+     * @return string
+     */
+    public function getUpdateTime()
+    {
+        return $this->updateTime;
+    }
+
+    /**
+     * Set isDelete
+     *
+     * @param boolean $isDelete
+     *
+     * @return Users
+     */
+    public function setIsDelete($isDelete)
+    {
+        $this->isDelete = $isDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelete
+     *
+     * @return boolean
+     */
+    public function getIsDelete()
+    {
+        return $this->isDelete;
+    }
+    
+    public function eraseCredentials()
+    {
+    }
+    
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->salt,
+            $this->tel,
+            $this->email,
+            $this->username,
+            $this->password,
+            $this->loginSalt,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+    
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->salt,
+            $this->tel,
+            $this->email,
+            $this->username,
+            $this->password,
+            $this->loginSalt,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
+    }
+}

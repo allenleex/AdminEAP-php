@@ -1,0 +1,41 @@
+services:
+#    CoreBundle\Security\Provider\WsseProvider:
+#        arguments:
+#            $cachePool: '@cache.app'
+#        public: false
+
+#    CoreBundle\Security\Firewall\WsseListener:
+#        arguments: ['@security.token_storage', '@security.authentication.manager']
+#        public: false
+#    core.example:
+#        class: CoreBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    core.importdoctrine.command:
+        class: 'CoreBundle\Functions\ImportMappingDoctrineCommand'
+        arguments: ['@service_container']
+    core.ymlParser:
+        class: 'CoreBundle\Services\YmlParser\YmlParser'
+        arguments: ["%kernel.root_dir%"]
+    core.common:
+        class: 'CoreBundle\Functions\Common'
+        arguments: ['@service_container']
+    security.encoder:
+        class: 'CoreBundle\Encoder\PasswordEncoder'
+        arguments: [6]
+    core.user_provider:
+        class: 'CoreBundle\Security\User\UserProvider'
+        arguments: ['@service_container']
+    core.user_checker:
+        class: 'CoreBundle\Security\UserChecker'
+    core.simpleauthenticator:
+        class: 'CoreBundle\Security\SimpleAuthenticator'
+        arguments: ["@security.password_encoder"]
+    core.authentication_handler:
+        class: 'CoreBundle\Handler\AuthenticationHandler'
+        arguments: ['@router', '@doctrine']
+        public: false
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+    core.controller.command:
+        class: 'CoreBundle\Functions\ControllerCommand'
+        arguments: ['@service_container']

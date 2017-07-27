@@ -1,0 +1,16 @@
+services:
+    manage.user_provider:
+        class: ManageBundle\Security\User\UserProvider
+        arguments: ['@service_container']
+    manage.simpleauthenticator:
+        class: ManageBundle\Security\SimpleAuthenticator
+        arguments: ["@security.password_encoder"]
+    manage.authentication_handler:
+        class: 'ManageBundle\Handler\AuthenticationHandler'
+        arguments: ['@router', '@doctrine']
+        public: false
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+    ManageBundle\Form\LoginType:
+        arguments: ['@doctrine.orm.entity_manager']
+        tags: [form.type]

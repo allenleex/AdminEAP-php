@@ -1,0 +1,29 @@
+parameters:
+    dbprefix: cms_
+    multidb: 0
+    defaultprefix: manage
+services:
+    core.db_prefix_listener_event:
+        class: 'CoreBundle\EventListener\DbPrefixListener'
+        arguments: ['%dbprefix%']
+        tags:
+            - {name: doctrine.event_subscriber}
+    core.exception_subscriber:
+        class: CoreBundle\EventSubscriber\ExceptionSubscriber
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_subscriber }
+    core.router_event:
+        class:  CoreBundle\EventListener\RouterListener
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 35 }
+    core.controller_event:
+        class: CoreBundle\EventListener\ControllerListener
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

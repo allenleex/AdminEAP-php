@@ -1,0 +1,43 @@
+{% extends 'AvanzuAdminThemeBundle:layout:login-layout.html.twig' %}
+
+{% block page_content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="javascript:void(0);"></a>
+        </div><!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg"><b>{{ product }}</b>管理系统</p>
+            <form action="{{ path('manage_check') }}" method="post">
+                {% for k,v in form.children if k != 'csrf_token' and k != 'submit' %}
+		        <div class="form-group has-feedback">
+                    {{ form_widget(v) }}
+                    <span class="glyphicon glyphicon-{{ k=='username'?'envelope':'lock' }} form-control-feedback"></span>
+                </div>
+				{% endfor %}
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Remember Me
+                            </label>
+                        </div>
+                    </div><!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div><!-- /.col -->
+                </div>
+                {{ form_rest(form) }}
+            </form>
+
+            <div class="social-auth-links text-center" style="display:none;'>
+                <p>- OR -</p>
+                <a href="javascript:void(0);" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
+                <a href="javascript:void(0);" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
+            </div><!-- /.social-auth-links -->
+
+            <a href="javascript:void(0);">忘记密码</a><br>
+            <a href="javascript:void(0);" class="text-center">注册会员</a>
+
+        </div><!-- /.login-box-body -->
+    </div>
+{% endblock %}

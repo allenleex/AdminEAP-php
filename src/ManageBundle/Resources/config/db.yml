@@ -1,0 +1,33 @@
+services:
+    db.clonebase:
+        class: ManageBundle\DB\Clonebase
+        arguments:
+            - '@service_container'
+    db.users:
+        class: ManageBundle\DB\Users
+        arguments:
+            - '@service_container'
+    db.models:
+        class: ManageBundle\DB\Models
+        arguments:
+            - '@service_container'
+    db.model_attribute:
+        class: ManageBundle\DB\ModelAttribute
+        arguments:
+            - '@service_container'
+    db.model_form:
+        class: ManageBundle\DB\ModelForm
+        arguments:
+            - '@service_container'
+    db.model_form_attr:
+        class: ManageBundle\DB\ModelFormAttr
+        arguments:
+            - '@service_container'
+    db.menus:
+        class: ManageBundle\DB\Menus
+        arguments:
+            - '@service_container'
+    db.clonebase:
+        class: ManageBundle\DB\Clonebase
+        arguments:
+            - '@service_container'

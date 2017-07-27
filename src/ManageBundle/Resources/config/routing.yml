@@ -1,0 +1,108 @@
+manage_homepage:
+    path: /
+    defaults:
+        _controller: 'ManageBundle:Index:index'
+manage_login:
+    path: /login
+    defaults:
+        _controller: 'ManageBundle:Index:login'
+manage_check:
+    path: /check
+    defaults:
+        _controller: 'ManageBundle:Index:check'
+manage_checks:
+    path: /checks
+    defaults:
+        _controller: 'ManageBundle:Index:check'
+manage_captcha:
+    path: /captcha
+    defaults:
+        _controller: 'ManageBundle:Index:captcha'
+manage_logout:
+    path: /logout
+    defaults:
+        _controller: 'ManageBundle:Index:logout'
+avanzu_admin_home:
+    path: /main
+    defaults:
+        _controller: 'ManageBundle:Main:index'
+manage_main:
+    path: /main
+    defaults:
+        _controller: 'ManageBundle:Main:index'
+manage_top:
+    path: /top
+    defaults:
+        _controller: 'ManageBundle:Main:top'
+manage_left:
+    path: /left
+    defaults:
+        _controller: 'ManageBundle:Main:left'
+manage_right:
+    path: /right
+    defaults:
+        _controller: 'ManageBundle:Main:right'
+manage_setsite:
+    path: /setsite
+    defaults:
+        _controller: 'ManageBundle:Setsite:index'
+manage_setwifi:
+    path: /setwifi
+    defaults:
+        _controller: 'ManageBundle:Setwifi:index'
+manage_setbundle:
+    path: /setbundle
+    defaults:
+        _controller: 'ManageBundle:Setbundle:index'
+manage_setmodels:
+    path: /setmodels
+    defaults:
+        _controller: 'ManageBundle:Setmodels:index'
+manage_setmodelform:
+    path: /setmodelform
+    defaults:
+        _controller: 'ManageBundle:Setmodelform:index'
+manage_setcontroller:
+    path: /setcontroller
+    defaults:
+        _controller: 'ManageBundle:Setcontroller:index'
+manage_setmenus:
+    path: /setmenus
+    defaults:
+        _controller: 'ManageBundle:Setmenus:index'
+manage_setroutes:
+    path: /setroutes
+    defaults:
+        _controller: 'ManageBundle:Setroutes:index'
+manage_setthemes:
+    path: /setthemes
+    defaults:
+        _controller: 'ManageBundle:Setthemes:index'
+manage_setuser:
+    path: /setuser
+    defaults:
+        _controller: 'ManageBundle:Setuser:index'
+manage_setuserdemo:
+    path: /setuserdemo
+    defaults:
+        _controller: 'ManageBundle:Setuserdemo:index'
+manage_setgroup:
+    path: /setgroup
+    defaults:
+        _controller: 'ManageBundle:Setgroup:index'
+manage_setfunc:
+    path: /setfunc
+    defaults:
+        _controller: 'ManageBundle:Setfunc:index'
+manage_setrole:
+    path: /setrole
+    defaults:
+        _controller: 'ManageBundle:Setrole:index'
+manage_setauthorize:
+    path: /setauthorize
+    defaults:
+        _controller: 'ManageBundle:Setauthorize:index'
+manage_setdictionaries:
+    path: /setdictionaries
+    defaults:
+        _controller: 'ManageBundle:Setdictionaries:index'

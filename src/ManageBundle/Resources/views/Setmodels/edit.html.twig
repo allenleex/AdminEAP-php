@@ -1,0 +1,96 @@
+{% extends 'ManageBundle:layout:content-layout.html.twig' %}
+{% block content %}
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><li class="fa fa-remove"></li></button>
+	<h5 class="modal-title">新增模型</h5>
+</div>
+<div class="modal-body">
+	<form id="user-form" name="user-form" class="form-horizontal">
+		<input type="hidden" name="id" value="{{ app.request.get('id',0) }}">
+		<input type='hidden' value='718f5028-1996-4839-bf3c-80198c961c24' id='csrf_token'>
+		<div class="box-body">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="name" class="col-sm-4 control-label">英文标识</label>
+					<div class="col-sm-7">
+						<input type="text" class="form-control" id="name" name="name" placeholder="英文标识" value="{{ info.name|default('') }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="title" class="col-sm-4 control-label">中文名称</label>
+					<div class="col-sm-7">
+						<input type="text" class="form-control" id="title" name="title" placeholder="中文名称" value="{{ info.title|default('') }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="service" class="col-sm-4 control-label">所属服务</label>
+
+					<div class="col-sm-7">
+						<input type="text" class="form-control" id="service" name="service" placeholder="所属服务" value="{{ info.service|default('') }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="bundle" class="col-sm-4 control-label">所属bundle</label>
+
+					<div class="col-sm-7">
+						<select name="bundle" class="form-control input-sm">
+						    <option value="ManageBundle">ManageBundle</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+			    <div class="form-group">
+					<label class="col-sm-3 control-label">数据引擎</label>
+
+					<div class="col-sm-8">
+						<select name="engine" class="form-control input-sm">
+						    <option value="MyISAM">MyISAM</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">是否可用</label>
+
+					<div class="col-sm-8">
+						<select name="status" class="form-control input-sm">
+						    <option value="1">是</option>
+						    <option value="0">否</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">结构类型</label>
+					<div class="col-sm-8">
+					    <select name="structure" class="form-control input-sm">
+						    <option value="0">横表</option>
+						    <option value="1">纵表</option>
+						</select>
+				    </div>
+				</div>
+			</div>
+		</div>
+		<!-- /.box-body -->
+		<div class="box-footer text-right">
+			<!--以下两种方式提交验证,根据所需选择-->
+			<button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal">取消</button>
+			<button type="submit" class="btn btn-primary" data-btn-type="save">提交</button>
+		</div>
+		<!-- /.box-footer -->
+	</form>
+
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+	$(function() {
+		modelsJs.initEdit();
+	});
+	
+	
+	function resetForm(){
+		form.clearForm();
+		$("#user-form").data('bootstrapValidator').resetForm();
+	}
+</script>
+{% endblock %}

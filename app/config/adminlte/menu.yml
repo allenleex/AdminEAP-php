@@ -1,0 +1,6 @@
+services:
+    manage_bundle.menu_listener:
+        class: 'ManageBundle\EventListener\MenuItemListListener'
+        tags:
+            - { name: 'kernel.event_listener', event: 'theme.sidebar_setup_menu', method: 'onSetupMenu' }
+            - { name: 'kernel.event_listener', event: 'theme.breadcrumb', method: 'onSetupMenu' }

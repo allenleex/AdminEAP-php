@@ -1,0 +1,3 @@
+avanzu_admin_theme:
+#    use_assetic: false
+    bower_bin: "bower "

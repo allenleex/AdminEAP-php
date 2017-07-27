@@ -1,0 +1,31 @@
+{# CMS/Core/Resources/views/layout.html.twig #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% block html_tag %}
+<html lang="{{ app.request.locale }}">
+{% endblock html_tag %}
+	<head>
+        <meta charset="{{ _charset }}" />
+        <meta name="robots" content="noindex,nofollow" />
+        <title>{{product}}{% block title %}{% endblock %}</title>
+        <meta name="keywords" content="{{ keyword }}" />
+        <meta name="descripton" content="{{ content }}" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+		<script>
+			var csrf_token	= "{{csrf_token}}";
+        	var jsbase  = "{{ asset('bundles') }}";
+        	var baseUrl = "{{ app.request.getBaseUrl() }}";
+        </script>
+        <script type="text/javascript" src="{{ asset(corepath~'/js/seajs/sea.main.js') }}"></script>
+        <script type="text/javascript" src="{{ asset(corepath~'/js/seajs/sea.map.js') }}"></script>
+        </script>
+        {% block css %}{% endblock css %}
+        {% block js %}{% endblock js %}
+    </head>
+    {% block body %}
+	<body>
+	{% block content %}body->content{% endblock content %}
+	{% block footer %}<div class="footer">Copyright @{{copyright}} All rights reserved.</div>{% endblock footer %}
+	</body>
+	{% endblock body %}
+</html>

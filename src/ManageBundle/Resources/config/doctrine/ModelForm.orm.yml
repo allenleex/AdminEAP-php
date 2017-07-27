@@ -1,0 +1,147 @@
+ManageBundle\Entity\ModelForm:
+    type: entity
+    table: model_form
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        title:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 备注
+        modelId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 模型ID
+            column: model_id
+        bindform:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 关联表单
+        bindfield:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 关联字段
+        parentForm:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 继承表单
+            column: parent_form
+        remark:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 备注
+        type:
+            type: boolean
+            nullable: false
+            options:
+                comment: '类型,0横表,1纵表'
+        status:
+            type: boolean
+            nullable: false
+            options:
+                comment: 1启用，0禁用
+        sort:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: false
+                comment: 排序
+        fmgroup:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: false
+                comment: '1=继承 2=区块文档 3=文档 4=推送 5=会员认证 6=会员组'
+        url:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 链接
+        initcondition:
+            type: string
+            nullable: false
+            length: 200
+            options:
+                fixed: false
+        initmodel:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 初始化模型
+        checked:
+            type: boolean
+            nullable: false
+            options:
+                comment: 是否审核
+        attributes:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+        issystem:
+            type: boolean
+            nullable: false
+            options:
+                comment: 是否系统字段
+        identifier:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                comment: 唯一标识
+        createTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 创建时间
+            column: create_time
+        updateTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 更新时间
+            column: update_time
+        isDelete:
+            type: boolean
+            nullable: false
+            options:
+                comment: 0正常，1假删除
+            column: is_delete
+    lifecycleCallbacks: {  }
