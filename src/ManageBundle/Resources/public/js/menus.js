@@ -270,6 +270,7 @@
 		var _self = this;
 		form.clearForm();
 		ajaxPost(this.getUrl+"?id="+node.id,null,function(data){
+			data['parentName'] = node.parentName;
 			form.initFormData(data);
 			_self.fillBackIconName(data.icon);
 		})

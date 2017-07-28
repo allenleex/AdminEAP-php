@@ -29,15 +29,15 @@ class SetmenusController extends Controller
     
         return parent::error('操作失败');
     }
-    
+
     public function getTreeDataAction()
     {
         $map = array();
-        $reault = $this->get('db.menus')->findBy($map);
-        
-        //$reault = 
+        $result = $this->get('db.menus')->findBy($map, null, 300);
 
-        return parent::success('操作成功', '', isset($reault['rows'])?$reault['rows']:array());
+        $result = $this->get('core.common')->getTree(isset($result['rows'])?$result['rows']:array());
+
+        return parent::success('操作成功', '', json_decode(json_encode($result),true));
         $nodes0 = array();
         $nodes0[0]['text'] = "我的待办a";
         $nodes0[0]['tags'] = "";
@@ -101,27 +101,10 @@ class SetmenusController extends Controller
     }
     
     public function getinfoAction()
-    {
-        //$map = array();
-        //$map['id'] = (int)$this->get('request')->get('id',0);
-    
-        //$result = $this->get('db.users')->finOnedBy($map);
-        $result = array();
-        $result['id'] = "8a8a80f05cbef2d8015cbf15254c0001";
-        $result['name'] = "我的待办";
-        $result['code'] = "TODO";
-        $result['url'] = "";
-        $result['parentId'] = "";
-        $result['levelCode'] = "100000";
-        $result['icon'] = "fa fa-calendar-check-o";
-        $result['functype'] = 0;
-        $result['remark'] = "";
-        $result['parentName'] = "系统菜单";
-        $result['fflist'] = "";
-        $result['roleId'] = "";
-        $result['createDateTime'] = 1470899213;
-        $result['updateDateTime'] = 1470899213;
-        return parent::success('操作成功', '', $result);
+    {    
+        $result = $this->get('db.menus')->findOneById((int)$this->get('request')->get('id',0));
+
+        return parent::success('操作成功', '', $this->get('serializer')->normalize($result));
     }
     
     public function checkAction()

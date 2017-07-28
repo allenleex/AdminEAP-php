@@ -622,8 +622,177 @@ class Common extends ServiceBase
      *  通过数据库获取所有元素，通过下面函数构造树形结构(迭代算法)
      * @param array $menus
      */
-    public function getTree(array $data, $pid=0, &$menuobjs = array(), $falg=true, $hasSuffix=false)
+    public function getTree(array $menus, $pid=0, &$menuobjs = array())
     {
+        $tree = array();
+        $menuList = array();
+        $notrootmenu = array();
+
+        //取最小id
+        if($pid==0)
+        {
+            $ppid = 99999999;
+            foreach($menus as $menu)
+            {
+                if(is_object($menu))
+                {
+                    $mpid = $menu->getPid();
+                    $menuList[$menu->getId()] = $menu;
+                }else{
+                    $mpid = $menu['pid'];
+                    $menuList[$menu['id']] = $menu;
+                }
         
+                if($mpid<$ppid)
+                {
+                    $ppid = $mpid;
+                    $pid = $mpid;
+                }
+                
+                
+            }
+        }
+        
+        //循环
+        foreach($menus as $menu)
+        {
+            $menuobj = new \stdClass();
+            
+            //判断是对象类型还是数组类型
+            if(is_object($menu))
+            {
+                $id = $menu->getId();
+                $mpid = $menu->getPid();
+                $menuobj->id = $menu->getId();
+                $menuobj->pid = $menu->getPid();
+                $menuobj->icon = $menu->getIcon();
+                $menuobj->tags = $menu->getName();
+                $menuobj->text = $menu->getLabel();
+                $menuobj->parentName = isset($menuList[$menu->getPid()])?$menuList[$menu->getPid()]->getLabel():'系统菜单';
+            }else{
+                $id = $menu['id'];
+                $mpid = $menu['pid'];
+                $menuobj->id = $menu['id'];
+                $menuobj->pid = $menu['pid'];
+                $menuobj->icon = $menu['icon'];
+                $menuobj->tags = $menu['name'];
+                $menuobj->text = $menu['label'];
+                $menuobj->parentName = isset($menuList[$menu['pid']])?$menuList[$menu['pid']]['label']:'系统菜单';
+            }        
+
+            $menuobj->nodes = array();
+            $menuobjs[$id] = $menuobj;
+
+        
+            //根目录
+            if ($pid==$mpid)
+                $tree[$id] = $menuobj;
+            else
+                $notrootmenu[$id]=$menuobj;
+        }
+        
+        foreach($notrootmenu as $menuobj)
+        {
+            $id = $menuobj->id;
+            $mpid = $menuobj->pid;
+            
+            $menuobjs[$mpid]->nodes[$id]=$menuobj;
+        }
+
+        unset($menuList);
+        unset($notrootmenu);
+        
+        return $tree;
+    }
+    
+    public function getTreeback(array $menus, $pid=0, &$menuobjs = array(), $falg=true, $hasSuffix=false)
+    {
+        $tree = array();
+        $notrootmenu = array();
+
+        //取最小id
+        if($pid==0)
+        {
+            $ppid = 99999999;
+            foreach($menus as $menu)
+            {
+                if(is_object($menu))
+                    $mpid = $menu->getPid();
+                else
+                    $mpid = $menu['pid'];
+
+                if($mpid<$ppid)
+                {
+                    $ppid = $mpid;
+                    $pid = $mpid;
+                }
+            }
+        }
+
+        //循环
+        foreach($menus as $menu)
+        {
+            //判断是对象类型还是数组类型
+            if(is_object($menu))
+            {
+                $id = $menu->getId();
+                $mpid = $menu->getPid();
+
+                //对url参数的操作
+                if(method_exists($menu, 'getUrlparams')&&$falg)
+                {
+                    $menu->setUrlparams(self::getQueryParam($menu->getUrlparams()));
+
+                    if(method_exists($menu, 'getCategory')&&$menu->getCategory())
+                        $menu->setUrlparams(array_merge($menu->getUrlparams(),array('category'=>$menu->getCategory())));
+                }
+            }else{
+                $id = $menu['id'];
+                $mpid = $menu['pid'];
+
+                //对url参数的操作
+                if(isset($menu['urlparams'])&&$menu['urlparams']&&$falg)
+                {
+                    $menu['urlparams'] = self::getQueryParam($menu['urlparams']);
+
+                    if(isset($menu['category'])&&$menu['category'])
+                        $menu['urlparams'] = array_merge($menu['urlparams'],array('category'=>$menu['category']));
+                }
+            }
+
+            $menuobj = new \stdClass();
+            $menuobj->menu = $menu;
+
+            $menuobj->nodes = array();
+            $menuobjs[$id] = $menuobj;
+
+            //根目录
+            if ($pid==$mpid)
+                $tree[$id] = $menuobj;
+            else
+                $notrootmenu[$id]=$menuobj;
+        }
+
+        foreach($notrootmenu as $menuobj)
+        {
+            $menu = $menuobj->menu;
+            if(is_object($menu))
+            {
+                $id = $menu->getId();
+                $mpid = $menu->getPid();
+            }else{
+                $id = $menu['id'];
+                $mpid = $menu['pid'];
+            }
+            if ($hasSuffix)
+                $menuobjs[$mpid]->nodes[]=$menuobj;
+            else
+                $menuobjs[$mpid]->nodes[$id]=$menuobj;
+        }
+
+        unset($menuobjs);
+        unset($notrootmenu);
+
+        return $tree;
     }
 }
