@@ -9,8 +9,35 @@ namespace ManageBundle\Controller;
 
 class SetmenusController extends Controller
 {
+    public function saveAction()
+    {
+        if($this->get('request')->getMethod() == "POST")
+        {
+            $id = (int)$this->get('request')->get('id');
+    
+            $data = $this->get('request')->request->all();
+    
+            unset($data['csrf_token']);
+    
+            if($id>0)
+                $this->get('db.menus')->update($id, $data);
+            else
+                $this->get('db.menus')->add($data);
+    
+            return parent::success('操作成功');
+        }
+    
+        return parent::error('操作失败');
+    }
+    
     public function getTreeDataAction()
     {
+        $map = array();
+        $reault = $this->get('db.menus')->findBy($map);
+        
+        //$reault = 
+
+        return parent::success('操作成功', '', isset($reault['rows'])?$reault['rows']:array());
         $nodes0 = array();
         $nodes0[0]['text'] = "我的待办a";
         $nodes0[0]['tags'] = "";
@@ -95,5 +122,10 @@ class SetmenusController extends Controller
         $result['createDateTime'] = 1470899213;
         $result['updateDateTime'] = 1470899213;
         return parent::success('操作成功', '', $result);
+    }
+    
+    public function checkAction()
+    {
+        return parent::success('成功');
     }
 }

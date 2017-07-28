@@ -39,7 +39,8 @@
         this.createurl = baseUrl+"/create";
         this.treeurl = baseUrl+"/getTreeData";
         this.getUrl = baseUrl+"/getinfo";
-        this.check = baseUrl+"/check";
+        this.checkurl = baseUrl+"/check";
+        this.iconurl = basePath+"/"+b+"/icon";
         
         
         this.form = $('#function-form').form();
@@ -52,15 +53,14 @@
 	{
         this.initTree(0);
         this.initBtnCheck();
+        this.validatorForm();
     }
 	
-	Menus.prototype.initBtnCheck = function ()
+	Menus.prototype.validatorForm = function ()
 	{
-		var form = this.form;
+		var _self = this;
 		var saveurl = this.saveurl;
 		
-		var _self = this;
-
 		//初始化校验
 		$('#function-form').bootstrapValidator({
 			message : '请输入有效值',
@@ -72,7 +72,7 @@
 			submitHandler : function(validator, functionform, submitButton) {
 				modals.confirm('确认保存？', function() {
 					//Save Data，对应'submit-提交'
-					var params = form.getFormSimpleData();
+					var params = _self.form.getFormSimpleData();
 					ajaxPost(saveurl, params, function(data, status) {
 						if (data.status) {
 							//var id=$("input[name='id']").val();
@@ -87,42 +87,29 @@
 				name : {
 					validators : {
 						notEmpty : {
-							message : '请输入标识'
-						},
-				        remote:{
-				        	url: _self.check,
-				        	data: function(validator) {
-	                            return {
-	                                fieldName:'name',
-	                                fieldValue:$('#name').val(),
-	                                id:$('#id').val()
-	                            };
-	                        },
-				        	message:'该标识已被使用'
-				        }
+							message : '请输入标识ss'
+						}
+//				        ,remote:{
+//				        	url: _self.checkurl,
+//				        	data: function(validator) {
+//	                            return {
+//	                                fieldName:'name',
+//	                                fieldValue:$('#name').val(),
+//	                                id:$('#id').val()
+//	                            };
+//	                        },
+//				        	message:'该标识已被使用'
+//				        }
 					}
 				},
-				label : {
+				icon : {
 					validators : {
 						notEmpty : {
-							message : '请输入名称'
-						}
-				},
-				levelCode : {
-					validators : {
-						notEmpty : {
-							message : '请输入层级编码'
+							message : '请输入图标'
 						}
 					}
 				},
-				functype:{
-					validators : {
-						notEmpty : {
-							message : '请选择菜单类型'
-						}
-					}
-				},
-				deleted : {
+				status : {
 					validators : {
 						notEmpty : {
 							message : '请选择是否可用'
@@ -131,7 +118,15 @@
 				}
 			}
 		});
-		form.initComponent();
+		
+		this.form.initComponent();
+	}
+	
+	Menus.prototype.initBtnCheck = function ()
+	{
+		var form = this.form;
+		var _self = this;
+		
 		//按钮事件
 		var btntype=null;
 		$('button[data-btn-type]').click(function() {
@@ -141,7 +136,7 @@
 			switch (action) {
 			case 'addRoot':
 				_self.formWritable(action);
-				form.clearForm();
+				_self.form.clearForm();
 				$("#icon_i").removeClass();
 				//填充上级菜单和层级编码
 				_self.fillParentAndLevelCode(null);
@@ -153,7 +148,7 @@
 					return false;
 				}
 				_self.formWritable(action);
-				form.clearForm();
+				_self.form.clearForm();
 				$("#icon_i").removeClass();
 				//填充上级菜单和层级编码
 				_self.fillParentAndLevelCode(selectedNode);
@@ -186,7 +181,7 @@
 			    modals.confirm('是否删除该节点',function(){
 			    	ajaxPost(_self.deleteurl+"?id="+selectedNode.id,null,function(data){
 			    		if(data.status){
-			    		   modals.correct('删除成功');
+			    		    modals.correct('删除成功');
 			    		}else{
 			    			modals.info(data.info);
 			    		}
@@ -207,17 +202,21 @@
 				_self.formReadonly();
 				break;
 			case 'selectIcon':
-				var disabled=$(this).hasClass("disabled");
+				
+				var disabled = $(this).hasClass("disabled");
 		        if(disabled)
 		        	break;
-				var iconName;
+		        
+				var iconName="";
+				
 				if($("#icon").val())
-				   iconName=encodeURIComponent($("#icon").val());
+				   iconName = encodeURIComponent($("#icon").val());
+
 				modals.openWin({
-                	winId:winId,
+                	winId: _self.winId,
                 	title:'图标选择器（双击选择）',
                 	width:'1000px',
-                	url:basePath+"/icon/nodecorator/select?iconName="+iconName
+                	url:_self.iconurl+"?iconName="+iconName
                 });
 				break;
 			}
@@ -257,22 +256,11 @@
 	
 	Menus.prototype.fillParentAndLevelCode = function (selectedNode)
 	{
+		console.log(selectedNode);
 		$("input[name='parentName']").val(selectedNode?selectedNode.text:'系统菜单');
-	    $("input[name='deleted'][value='0']").prop("checked","checked");
-	    if(selectedNode){
+	    $("input[name='status'][value='1']").prop("checked","checked");
+	    if(selectedNode)
 	    	$("input[name='pid']").val(selectedNode.id);
-			var nodes=selectedNode.nodes;
-			var levelCode=nodes?nodes[nodes.length-1].levelCode:null;
-			$("input[name='levelCode']").val(getNextCode(selectedNode.levelCode,levelCode,6));
-	    }else{
-			var parentNode=$("#tree").data("treeview").getNode(0);
-			var levelCode = "000000";
-			if (parentNode) {
-				var brothers = $("#tree").data("treeview").getSiblings(0);
-				levelCode = brothers[brothers.length - 1].levelCode;
-			}
-			$("input[name='levelCode']").val(getNextCode("", levelCode, 6));
-	    }
 	}
 	
 	//填充form
@@ -316,6 +304,7 @@
 	//回填图标
 	Menus.prototype.fillBackIconName = function(icon_name)
 	{
+		modals.hideWin(this.winId);
 		$("#icon").val(icon_name);
 		$("#icon_i").removeClass().addClass("form-control-feedback").addClass(icon_name);
 	}

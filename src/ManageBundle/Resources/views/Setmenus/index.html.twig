@@ -44,64 +44,24 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="name" class="col-sm-2 control-label">名称</label>
+						<label for="label" class="col-sm-2 control-label">名称</label>
 
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="label" name="label" placeholder="名称">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="name" class="col-sm-2 control-label">bundle</label>
-
-						<div class="col-sm-9">
-							<input type="text" class="form-control" id="bundle" name="bundle" placeholder="bundle">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="name" class="col-sm-2 control-label">控制器</label>
+						<label for="controller" class="col-sm-2 control-label">控制器</label>
 
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="controller" name="controller" placeholder="控制器">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="name" class="col-sm-2 control-label">方法</label>
+						<label for="action" class="col-sm-2 control-label">方法</label>
 
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="action" name="action" placeholder="控制器">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="code" class="col-sm-2 control-label">编码</label>
-
-						<div class="col-sm-9">
-							<input type="text" class="form-control" id="code" name="code" placeholder="编码">
-						</div>
-					</div>
-						<div class="form-group">
-						<label for="url" class="col-sm-2 control-label">URL</label>
-
-						<div class="col-sm-9">
-							<input type="text" class="form-control" id="url" name="url" placeholder="URL">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="levelCode" class="col-sm-2 control-label">层级编码</label>
-
-						<div class="col-sm-9">
-							<input type="text" class="form-control" id="levelCode" name="levelCode" placeholder="层级编码">
-						</div>
-					</div>
-					 <div class="form-group">
-						<label class="col-sm-2 control-label">菜单类型</label>
-						<div class="col-sm-9">
-							<label class="control-label">
-                                <input type="radio" name="functype" class="square-green" checked="checked"	value="0"> 目录
-							</label> &nbsp;&nbsp;&nbsp; <label class="control-label"> <input type="radio" name="functype" class="square-green"
-								value="1"> 菜单
-							</label> &nbsp;&nbsp;&nbsp; <label class="control-label"> <input type="radio" name="functype" class="square-green"
-								value="2"> 按钮
-							</label>
 						</div>
 					</div>
 				   <div class="form-group">
@@ -117,12 +77,25 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label  class="col-sm-2 control-label">是否可用</label>
+						<label for="badge" class="col-sm-2 control-label">标记</label>
 						<div class="col-sm-9">
-							<label class="control-label"> <input type="radio" name="deleted" class="square-green" checked="checked"
-								value="0"> 启用
+							<input type="text" class="form-control" id="badge" name="badge" placeholder="标记">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="badgeColor" class="col-sm-2 control-label">标记颜色</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="badgeColor" name="badgeColor" placeholder="标记颜色">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">是否可用</label>
+						<div class="col-sm-9">
+							<label class="control-label">
+							    <input type="radio" name="status" class="square-green" checked="checked" value="1" /> 启用
 							</label> &nbsp;&nbsp;&nbsp;
-							<label class="control-label"> <input type="radio"  name="deleted" class="square-green"	value="1"> 禁用
+							<label class="control-label">
+							    <input type="radio"  name="status" class="square-green" value="0" /> 禁用
 							</label>
 						</div>
 					</div>

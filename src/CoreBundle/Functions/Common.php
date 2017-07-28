@@ -617,4 +617,13 @@ class Common extends ServiceBase
                 $info->setAttributes('');
         }
     }
+    
+    /**
+     *  通过数据库获取所有元素，通过下面函数构造树形结构(迭代算法)
+     * @param array $menus
+     */
+    public function getTree(array $data, $pid=0, &$menuobjs = array(), $falg=true, $hasSuffix=false)
+    {
+        
+    }
 }
