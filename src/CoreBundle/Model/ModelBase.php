@@ -381,7 +381,7 @@ class ModelBase extends EntityRepository
         $result['rows'] = $em->getResult($this->hydrationMode);
          
         //计算总数
-        $result['pageCount'] = $multi?$paginator->count():count($result['data']);
+        $result['pageCount'] = $multi?$paginator->count():count($result['rows']);
 
         krsort($result);
 

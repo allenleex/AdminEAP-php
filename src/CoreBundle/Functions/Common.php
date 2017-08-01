@@ -81,6 +81,18 @@ class Common extends ServiceBase
         return $defaultEntityManager;
     }
     
+    public function getUser()
+    {
+        $token = $this->get('security.token_storage')->getToken();
+        if (null === $token)
+            return;
+    
+        if (!is_object($user = $token->getUser()))
+            return;
+    
+        return $user;
+    }
+    
     /**
      * 嵌入表前缀
      * @param string $name
@@ -794,5 +806,321 @@ class Common extends ServiceBase
         unset($notrootmenu);
 
         return $tree;
+    }
+    
+    public function U($url='', $vars='', $domain=false)
+    {
+        //基路径
+        $baseUrl = $this->get('request')->getScriptName();
+        $baseUrl = str_replace("/app.php","",$baseUrl);
+    
+        $dataType = (bool)$this->get('request')->get('_isApp', '');
+    
+        if(empty($url))
+        {
+            $urlArr = array();
+            //$urlArr[] = self::getBundleName(true);
+            $urlArr[] = self::getControllerName();
+            $urlArr[] = self::getActionName();
+    
+            $url = implode('/',$urlArr);
+        }
+    
+        $urlArr = explode('/',$url);
+    
+        //匹配路径标记
+        $matchTag = false;
+    
+        if(count($urlArr)==2&&$urlArr[0]==self::getControllerName()&&$urlArr[1]==self::getActionName())
+            $matchTag = true;
+    
+        if(count($urlArr)==1&&$urlArr[0]==self::getActionName())
+            $matchTag = true;
+    
+        if($matchTag)
+        {
+            try {
+                //匹配路由
+                $router = $this->get('router')->match($this->get('request')->getPathInfo());
+    
+                return $this->get('router')->generate($router['_route'], self::handleVars($vars), $domain);
+    
+            }catch (\Exception $e) {
+                $matchTag = false;
+            }
+        }
+    
+        if(!$matchTag)
+        {
+            $routeName = str_replace("/", "_", $url);
+    
+            $match = $this->get('router')->getRouteCollection()->get($routeName);
+    
+            if($match)
+            {
+                try {
+                    //匹配路由
+                    //dump($match,$this->get('router')->generate($routeName, self::handleVars($vars), $domain));die();
+                    $router = $this->get('router')->match($match->getPath());
+                    //dump($match->getPath());die();
+                    return $this->get('router')->generate($router['_route'], self::handleVars($vars), $domain);
+    
+                }catch (\Exception $e) {
+    
+                }
+            }
+        }
+    
+        //读取默认bundle
+        $defaultPrefix = $this->prefix;
+    
+        $bundle = self::getBundleName();
+    
+        //bundle集
+        $bundles = self::getBundles();
+    
+        if(!isset($bundles[$bundle]))
+            $bundle = $defaultPrefix?$defaultPrefix:self::getBundleName(true);
+    
+        $bundleArr = array();
+    
+        foreach(array_keys($bundles) as $key)
+        {
+            $bundleArr[strtolower(str_replace("Bundle","",$key))] = "";
+        }
+    
+        $item = explode('\\',$bundles[$bundle]);
+    
+        //去掉最后一个数组
+        array_pop($item);
+    
+        $_bundle = end($item);
+    
+        // 解析URL
+        $info = parse_url($url);
+    
+        if(!empty($info['path']))
+        {
+            $info['path'] = str_replace($baseUrl,"",$info['path']);
+            $pathArr = explode("/",$info['path']);
+    
+            $action = strtolower($pathArr?array_pop($pathArr):self::getActionName());
+            $controller = $pathArr?strtolower(array_pop($pathArr)):self::getControllerName();
+            $bundle = $pathArr?strtolower(array_pop($pathArr)):strtolower(str_replace("Bundle","",$_bundle));
+    
+            if(!$dataType)
+            {
+                $controller = $controller!="index"?$controller:"";
+                $action = $action!="index"?$action:"";
+            }
+    
+            $bundle = isset($bundleArr[$bundle])?$bundle:strtolower(str_replace("Bundle","",$_bundle));
+    
+            $urlArr = array();
+    
+            $urlArr[] = $baseUrl;
+    
+            if($bundle==$defaultPrefix)
+                $bundle = "";
+    
+            if($info['path']!="/")
+            {
+                if($bundle)
+                    $urlArr[] = $bundle;
+    
+                if($controller)
+                    $urlArr[] = $controller;
+    
+                if($action)
+                    $urlArr[] = $action;
+    
+                $url = implode('/', $urlArr);
+            }
+        }
+    
+        //处理URL参数
+        $url = self::handleUrlParam($url, $vars, $info);
+    
+        $url = $domain?self::ensureUrlIsAbsolute($url):$url;
+    
+        unset($vars);
+        unset($info);
+        unset($urlArr);
+        unset($pathArr);
+        unset($_bundle);
+        unset($bundleArr);
+        unset($routeName);
+        unset($item);
+        unset($bundle);
+        unset($bundles);
+        unset($controller);
+        unset($action);
+        unset($baseUrl);
+    
+        return $url?$url:'/';
+    }
+    
+    /**
+     * 处理URL参数
+     * @param string $url
+     * @param string $vars
+     * @param string $info
+     */    
+    protected function handleUrlParam($url, $vars, $info)
+    {
+        $params = array();
+    
+        // 解析参数
+        if(is_string($vars))
+            parse_str($vars,$vars);
+        elseif(!is_array($vars))
+            $vars = array();
+    
+        if(is_array($vars))
+        {
+            foreach($vars as &$vv)
+            {
+                if(!is_array($vv))
+                    continue;
+    
+                $values = end($vv);
+    
+                switch(key($vv))
+                {
+                    case 'eq':
+                        $vv = is_array($values)?implode(',',$values):$values;
+                        break;
+                    case 'andX':
+                    case 'orX':
+                        if(!is_array($vv))
+                            continue;
+    
+                            $expr = key($vv);
+    
+                            $arr = array();
+                            if(is_array(end($vv)))
+                            {
+    
+                                foreach(end($vv) as $its)
+                                {
+                                    $arrs = array();
+                                    $arrs[] = key($its);
+                                    $its = end($its);
+                                    if(is_array($its))
+                                    {
+                                        $arrs[] = key($its);
+                                        $arrs[] = end($its);
+                                    }else{
+                                        $arrs[] = $its;
+                                    }
+                                    $arr[] = implode(',', $arrs);
+                                }
+                            }
+    
+                            $vv = $expr.'|'.implode('|',$arr);
+                            break;
+                    default:
+                        $vv = key($vv)."|".(is_array($values)?implode(',',$values):$values);
+                        break;
+                }
+            }
+        }
+    
+        // 解析地址里面参数 合并到vars
+        if(isset($info['query']))
+        {
+            parse_str($info['query'],$params);
+            $vars = array_merge($params,$vars);
+        }
+    
+        $vars = trim(urldecode(http_build_query($vars)),'?');
+    
+        if(strpos($url,'?')===false)
+            $url .= $vars?'?'.$vars:'';
+        else
+            $url .= $vars?'&'.$vars:'';
+    
+        unset($vars);
+        unset($params);
+        unset($info);
+    
+        return $url;
+    }
+    
+    public function ensureUrlIsAbsolute($url, array $info=array())
+    {
+        $request = $this->get('request');
+    
+        if (false !== strpos($url, '://') || 0 === strpos($url, '//'))
+            return $url;
+    
+        $host = isset($info['host'])?$info['host']:$request->server->get('HTTP_HOST');
+    
+        if ('' === $host)
+            return $url;
+    
+        $scheme = isset($info['scheme'])?$info['scheme']:$this->get('router.request_context')->getScheme();
+    
+        return $scheme.'://'.$host.$url;
+    }
+    
+    public function handleVars($vars)
+    {
+        // 解析参数
+        if(is_string($vars))
+            parse_str($vars,$vars);
+        elseif(!is_array($vars))
+            $vars = array();
+    
+        if(is_array($vars))
+        {
+            foreach($vars as &$vv)
+            {
+                if(!is_array($vv))
+                    continue;
+    
+                $values = end($vv);
+    
+                switch(key($vv))
+                {
+                    case 'eq':
+                        $vv = is_array($values)?implode(',',$values):$values;
+                        break;
+                    case 'andX':
+                    case 'orX':
+                        if(!is_array($vv))
+                            continue;
+    
+                            $expr = key($vv);
+    
+                            $arr = array();
+                            if(is_array(end($vv)))
+                            {
+    
+                                foreach(end($vv) as $its)
+                                {
+                                    $arrs = array();
+                                    $arrs[] = key($its);
+                                    $its = end($its);
+                                    if(is_array($its))
+                                    {
+                                        $arrs[] = key($its);
+                                        $arrs[] = end($its);
+                                    }else{
+                                        $arrs[] = $its;
+                                    }
+                                    $arr[] = implode(',', $arrs);
+                                }
+                            }
+    
+                            $vv = $expr.'|'.implode('|',$arr);
+                            break;
+                    default:
+                        $vv = key($vv)."|".(is_array($values)?implode(',',$values):$values);
+                        break;
+                }
+            }
+        }
+        return $vars;
     }
 }

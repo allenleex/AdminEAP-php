@@ -115,7 +115,8 @@ abstract class AbstractServiceManager extends ModelBase
     
         $attributes = $token->getAttributes();
     
-        $menus = isset($attributes['menus'])?$attributes['menus']:$this->get('core.rbac')->getMenuNodes($user->getRules());
+        //$menus = isset($attributes['menus'])?$attributes['menus']:$this->get('core.rbac')->getMenuNodes($user->getRules());
+        $menus = isset($attributes['menus'])?$attributes['menus']:array();
     
         if($menus)
             $map['id']['in'] = array_keys($menus);

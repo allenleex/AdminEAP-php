@@ -99,6 +99,20 @@ class Menus
     private $action;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="bundle", type="string", length=50, nullable=false)
+     */
+    private $bundle;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_hide", type="boolean", length=1, nullable=false)
+     */
+    private $is_hide;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="binary_tree", type="boolean", nullable=false)
@@ -455,6 +469,54 @@ class Menus
     public function getAction()
     {
         return $this->action;
+    }
+
+    /**
+     * Set bundle
+     *
+     * @param string $bundle
+     *
+     * @return Menus
+     */
+    public function setBundle($bundle)
+    {
+        $this->bundle = $bundle;
+
+        return $this;
+    }
+
+    /**
+     * Get bundle
+     *
+     * @return string
+     */
+    public function getBundle()
+    {
+        return $this->bundle;
+    }
+
+    /**
+     * Set isHide
+     *
+     * @param boolean $isHide
+     *
+     * @return Menus
+     */
+    public function setIsHide($isHide)
+    {
+        $this->is_hide = $isHide;
+
+        return $this;
+    }
+
+    /**
+     * Get isHide
+     *
+     * @return boolean
+     */
+    public function getIsHide()
+    {
+        return $this->is_hide;
     }
 
     /**

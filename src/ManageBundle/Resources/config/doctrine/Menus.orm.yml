@@ -91,6 +91,20 @@ ManageBundle\Entity\Menus:
             nullable: false
             type: string
             length: 50
+        bundle:
+            options:
+                comment: bundle
+                unsigned: false
+            nullable: false
+            type: string
+            length: 50
+        is_hide:
+            options:
+                comment: 是否隐藏
+                unsigned: false
+            nullable: false
+            type: boolean
+            length: 1
         binary_tree:
             options:
                 comment: '二叉树标识,1为启用'

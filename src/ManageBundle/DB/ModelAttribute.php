@@ -32,7 +32,7 @@ class ModelAttribute extends AbstractServiceManager
         $this->_reservedWord($data['name']);
     
         //判断字段是否已存在
-        $count = parent::count(array('name'=>$data['name'],'modelId'=>$data['model_id']));
+        $count = parent::count(array('name'=>$data['name'],'model_id'=>$data['model_id']));
     
         if($count>0)
             throw new \InvalidArgumentException(sprintf('[%s]字段已存在', $data['name']));
