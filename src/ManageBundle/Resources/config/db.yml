@@ -27,7 +27,3 @@ services:
         class: ManageBundle\DB\Menus
         arguments:
             - '@service_container'
-    db.clonebase:
-        class: ManageBundle\DB\Clonebase
-        arguments:
-            - '@service_container'

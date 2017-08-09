@@ -14,11 +14,13 @@ class Models extends AbstractServiceManager
     protected $stag, $filePath;
     
     public function _initialize()
-    {
-        //缓存标识,以数据库名称区别
-        $this->stag = $this->get('core.common')->C('database_name')."_models";
+    {        
+        $className = strtolower(parent::get_class_name());
         
-        $this->filePath = $this->get('core.common')->getSiteRoot()."FileDB".DIRECTORY_SEPARATOR."config_models.yml";
+        //缓存标识,以数据库名称区别
+        $this->stag = $this->get('core.common')->C('database_name')."_".$className;
+        
+        $this->filePath = $this->get('core.common')->getSiteRoot()."FileDB".DIRECTORY_SEPARATOR."config_".$className.".yml";
     }
 
     /**
